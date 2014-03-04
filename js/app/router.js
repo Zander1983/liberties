@@ -12,6 +12,8 @@ define(function (require) {
         articles, 
         deviceModel,
         genericmodel,
+        photos,
+        albums,
         that;
 
     return Backbone.Router.extend({
@@ -39,17 +41,26 @@ define(function (require) {
             "general-education-item/:id": "getGenericItem",
             "youth-community": "getGeneric",
             "youth-community-item/:id": "getGenericItem",
+            "information-technology": "getGeneric",
+            "information-technology-item/:id": "getGenericItem",
             
             /*****All generic model routes (i.e. just one item in the feed)******/
             "about-us": "getGenericModel",
             
             /****Custum Routes******/
-
+            "contact": "getContact",
+            "map": "getMap",
+            "albums": "getAlbums",
+            "photos/:id": "getPhotos",
+            "photo-item/:id": "getPhotoItem",
+            "tweets": "getTweets",
+            "tweets-item/:id": "getTweetsItem",
             
             /*****In Every Project**************/
             "notification": "getNotification",
             "articles/:project_title": "getArticles",
             "article/:id": "getArticle",
+            "waypay": "getWayPay",
         },
         
         initialize: function() {   
@@ -547,6 +558,82 @@ define(function (require) {
                 });
 
         },
+        
+        
+        getAlbums: function (id) {
+            //body.removeClass('left-nav');
+            require(["app/models/album", "app/views/AlbumList"], function (model, AlbumList) {
+       
+                if(typeof(albums)==='undefined' || albums===null){
+                    
+                    Useful.showSpinner();
+                    
+                    albums = new model.AlbumCollection();
+                    
+                    albums.fetch({
+                        full_url: false,
+                        success: function (collection) {
+                            Useful.correctView(that.body);
+                            slider.slidePage(new AlbumList({collection: collection}).$el);
+                            Useful.hideSpinner();
+                        },
+                        error: function(){
+                                Useful.hideSpinner();
+                                Useful.checkNetwork(slider);
+                        }
+                    });
+                }
+                else{ 
+                    Useful.correctView(that.body);
+                    slider.slidePage(new AlbumList({collection: albums}).$el);
+                }
+                            
+            });
+        },
+        
+        
+        
+         getPhotos: function (id) {
+            //body.removeClass('left-nav');
+            require(["app/models/photo", "app/views/PhotoList"], function (model, PhotoList) {
+
+                    Useful.showSpinner();
+                    photos = new model.PhotoCollection([], {photoset_id:id});
+                    
+                    photos.fetch({
+                        full_url: true,
+                        success: function (collection) {
+                            Useful.correctView(that.body);
+                            slider.slidePage(new PhotoList({collection: collection}).$el);
+                            Useful.hideSpinner();
+                            
+                            $('img.lazy').lazyload();                            
+                            setTimeout(function(){
+                                $(window).trigger('scroll');
+                            },1000);
+                        
+                        },
+                        error: function(){
+                                console.log('there was an error');
+                                Useful.hideSpinner();
+                                Useful.checkNetwork(slider);
+                        }
+                    });
+                            
+            });
+        },
+        
+        getPhotoItem: function (id) {
+            //body.removeClass('left-nav');
+            require(["app/views/PhotoItem"], function (PhotoItem) {
+                 Useful.correctView(that.body);
+                 slider.slidePage(new PhotoItem({model: photos.get(id)}).$el);
+                           
+            });
+        },
+
+
+
     
     });
 

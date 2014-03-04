@@ -12,7 +12,7 @@ define(function (require) {
     return Backbone.View.extend({
 
         initialize: function (options) {
-            this.fixLinks();
+
             this.render();     
 
         },
@@ -44,16 +44,6 @@ define(function (require) {
             return this;
         },
                 
-        
-        fixLinks: function(){
-    
-   
-            var text = twttr.txt.autoLink(this.model.attributes.text);
-            
-            if(text.length>0){
-                this.model.set({text: text});
-            }     
-        },
          
 
     });

@@ -181,16 +181,11 @@ define(function (require) {
      
         getHome: function () {
                 
-             console.log('in getHome and is_push is ');
-             console.log(is_push);
+        
                 if(is_push===false){
-                    console.log('in the fucking if');
                     that.getGeneric();                       
                 }
-                else{
-                    console.log('in the fucking else');
-                }
- 
+           
         },
         
         
@@ -210,7 +205,7 @@ define(function (require) {
 
                 }
                 else{
-                    console.log('in the else so re-showing existing generic collection...');
+                    
                     require(["app/views/GenericList"], function (GenericList) {                       
                         Useful.correctView(that.body);
                         slider.slidePage(new GenericList({collection: generic}).$el);
@@ -242,6 +237,7 @@ define(function (require) {
                         },
                         error:   function(model, xhr, options){
 
+                           Useful.correctView(that.body);
                            Useful.hideSpinner();
                            Useful.checkNetwork(slider);
 
@@ -280,7 +276,7 @@ define(function (require) {
                             Useful.hideSpinner();
                         },
                             error:function(){
-
+                                Useful.correctView(that.body);
                                 Useful.hideSpinner();
                                 Useful.checkNetwork(slider);
                         
@@ -326,6 +322,7 @@ define(function (require) {
                             Useful.hideSpinner();
                         }, 
                         error: function(){
+                                Useful.correctView(that.body);
                                 Useful.hideSpinner();
                                 Useful.checkNetwork(slider);
                         }
@@ -419,6 +416,7 @@ define(function (require) {
                                     Useful.hideSpinner();
                                 },
                                 error:function(model, xhr, options){    
+                                    Useful.correctView(that.body);
                                     Useful.hideSpinner();
                                     Useful.checkNetwork(slider);                  
                                 }
@@ -469,7 +467,8 @@ define(function (require) {
                             data.set('seen', '1');
 
                         },
-                        error:function(){                   
+                        error:function(){  
+                            Useful.correctView(that.body);
                             Useful.hideSpinner();
                             Useful.checkNetwork(slider);                  
                         }
@@ -525,8 +524,7 @@ define(function (require) {
                                 Useful.hideSpinner();
                             }, 
                             error:   function(model, xhr, options){
-                               console.log('Error on fetch, response is ')
-                               console.log(xhr.responseText);
+                                Useful.correctView(that.body);
                                 Useful.hideSpinner();
                                 Useful.checkNetwork(slider);                  
                             }
@@ -567,7 +565,7 @@ define(function (require) {
                                 Useful.hideSpinner();
                             },
                             error:function(){
-                        
+                                Useful.correctView(that.body);
                                 Useful.hideSpinner();
                                 Useful.checkNetwork(slider);
                         
@@ -598,6 +596,7 @@ define(function (require) {
                             Useful.hideSpinner();
                         },
                         error: function(){
+                                Useful.correctView(that.body);
                                 Useful.hideSpinner();
                                 Useful.checkNetwork(slider);
                         }
@@ -634,7 +633,7 @@ define(function (require) {
                         
                         },
                         error: function(){
-                                console.log('there was an error');
+                                Useful.correctView(that.body);
                                 Useful.hideSpinner();
                                 Useful.checkNetwork(slider);
                         }

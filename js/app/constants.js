@@ -5,7 +5,7 @@
 
     var project_title = "liberties", 
         project_number = "140416770541", 
-        push_server_url = "http://schoolspace.me", 
+        push_server_url = "http://push.schoolspace.ie", 
         feed_domain = "http://libertiescollege.schoolspace.ie", 
         standard_device_id = "63843", 
         standard_api_key = "hv7Vgd4jsbb",

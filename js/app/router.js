@@ -191,6 +191,8 @@ define(function (require) {
         
         getGeneric: function () {
          
+                console.log('in get generic and fragment is ');
+                console.log(Backbone.history.fragment);
                 
                 if((typeof(generic)==='undefined' || generic===null)){
 
@@ -432,6 +434,10 @@ define(function (require) {
                 
         getArticle: function (id) {
             // alert('in getArticle');
+            
+                            console.log('in get  article and fragment is ');
+                console.log(Backbone.history.fragment);
+            
             require(["app/models/article", "app/views/Article"], function (models, Article) {
                                
                 if(typeof(articles)==='undefined' || articles===null){

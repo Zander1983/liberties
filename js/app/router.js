@@ -182,9 +182,9 @@ define(function (require) {
         getHome: function () {
                 
              
-            if(Backbone.history.fragment==="" || Backbone.history.fragment==="news"){
-                that.getGeneric();                       
-            }
+                if(is_push===false){
+                    that.getGeneric();                       
+                }
  
         },
         
@@ -433,11 +433,7 @@ define(function (require) {
         
                 
         getArticle: function (id) {
-            // alert('in getArticle');
-            
-                            console.log('in get  article and fragment is ');
-                console.log(Backbone.history.fragment);
-            
+ 
             require(["app/models/article", "app/views/Article"], function (models, Article) {
                                
                 if(typeof(articles)==='undefined' || articles===null){

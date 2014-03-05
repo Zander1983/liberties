@@ -181,9 +181,14 @@ define(function (require) {
      
         getHome: function () {
                 
-             
+             console.log('in getHome and is_push is ');
+             console.log(is_push);
                 if(is_push===false){
+                    console.log('in the fucking if');
                     that.getGeneric();                       
+                }
+                else{
+                    console.log('in the fucking else');
                 }
  
         },

@@ -191,9 +191,6 @@ define(function (require) {
         
         getGeneric: function () {
          
-                console.log('in get generic and fragment is ');
-                console.log(Backbone.history.fragment);
-                
                 if((typeof(generic)==='undefined' || generic===null)){
 
                     that.reGenerate();

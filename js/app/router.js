@@ -201,8 +201,7 @@ define(function (require) {
                         });
                     }
             }
-            console.log('fragment is ');
-            console.log(Backbone.history.fragment);
+
         },
         
         reGenerate: function(){

@@ -7,6 +7,7 @@ define(function (require) {
         Useful      = require('app/utils/useful_func'),
         slider      = new PageSlider($('body')),
         generic,
+        news,
         event,
         tweets,
         articles, 
@@ -178,8 +179,10 @@ define(function (require) {
         
         /*******************ROUTES START HERE***************************/
         
+        
+        
         getGeneric: function () {
-
+            if(Backbone.history.fragment==="articles/"+project_title){
                     if((typeof(generic)==='undefined' || generic===null)){
 
                         that.reGenerate();
@@ -197,7 +200,9 @@ define(function (require) {
                             slider.slidePage(new GenericList({collection: generic}).$el);
                         });
                     }
-      
+            }
+            console.log('fragment is ');
+            console.log(Backbone.history.fragment);
         },
         
         reGenerate: function(){

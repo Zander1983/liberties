@@ -197,6 +197,7 @@ var app = {
 
         if ( event.article_id )
         {
+            is_push = true;
             window.location.hash = "message/"+event.article_id;
             //localStorage.payload =// event.payload   
         }

@@ -184,8 +184,8 @@ define(function (require) {
         getGeneric: function () {
             if(Backbone.history.fragment!=="messages/"+project_title){
                 
-                    console.log('Backbone.history.fragment is ');
-                    console.log(Backbone.history.fragment);
+                    alert('Backbone.history.fragment is ');
+                    alert(Backbone.history.fragment);
                 
                     if((typeof(generic)==='undefined' || generic===null)){
 

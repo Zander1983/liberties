@@ -178,7 +178,7 @@ var app = {
 
             case 'message':
          
-                window.location.hash = "article/"+e.payload.article_id;
+                window.location.hash = "message/"+e.payload.article_id;
          
                 break;
 
@@ -197,7 +197,7 @@ var app = {
 
         if ( event.article_id )
         {
-            window.location.hash = "article/"+event.article_id;
+            window.location.hash = "message/"+event.article_id;
             //localStorage.payload =// event.payload   
         }
         

@@ -59,8 +59,8 @@ define(function (require) {
             
             /*****In Every Project**************/
             "notification": "getNotification",
-            "articles/:project_title": "getArticles",
-            "article/:id": "getArticle",
+            "messages/:project_title": "getArticles",
+            "message/:id": "getArticle",
             "waypay": "getWayPay",
         },
         

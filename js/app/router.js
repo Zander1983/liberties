@@ -182,7 +182,7 @@ define(function (require) {
         
         
         getGeneric: function () {
-            if(Backbone.history.fragment==="articles/"+project_title){
+            if(Backbone.history.fragment!=="articles/"+project_title){
                     if((typeof(generic)==='undefined' || generic===null)){
 
                         that.reGenerate();

@@ -3,6 +3,7 @@ define(function (require) {
     "use strict";
 
     var Backbone            = require('backbone'),
+        Feeds               = require('app/utils/feed_paths'),
         id=1,
         xml,
         parsed = [], 

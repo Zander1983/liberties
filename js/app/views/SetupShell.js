@@ -28,10 +28,13 @@ define(function (require) {
         doBinds: function(){
    
 
-            this.options.body.find("div#side-nav-cont a").click( function() {
+            this.options.body.find("#side-nav a").click( function() {
                 //console.log('in side nav click');
-
-
+                    
+                if(window.location.hash==="#map"){
+                    that.options.body.find('#main-content').css('min-height', '1150px'); 
+                }
+                
                 $( this ).parent().parent().parent().find('li').each(function(){
                     //console.log('in the each');
                     $( this ).removeClass( 'side-nav-active' );
@@ -74,7 +77,7 @@ define(function (require) {
             });
 
 
-                
+             /*   
             this.options.body.find("div#side-nav-cont a").click( function() {
 
                 if(window.location.hash==="#map"){
@@ -89,7 +92,7 @@ define(function (require) {
               $( this ).parent().addClass( 'side-nav-active' );
 
 
-           });
+           });*/
 
            
     

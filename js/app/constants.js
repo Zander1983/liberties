@@ -4,7 +4,7 @@
  */
 
     var project_title = "liberties", 
-        project_number = "xx", 
+        project_number = "140416770541", 
         push_server_url = "http://schoolspace.me", 
         feed_domain = "http://libertiescollege.schoolspace.ie", 
         standard_device_id = "63843", 
@@ -13,6 +13,6 @@
         school_name = "Liberties College",
         flickr_api_key = "450d4efdb33c88599329727fa3ee051e",
         flickr_user_id = "114333967@N08",
-        in_browser = true;  
+        in_browser = false;  
   
 

@@ -102,7 +102,7 @@ body.left-nav .topcoat-navigation-bar, body.left-nav #main-content {
     -webkit-transform: translate3d(0, 0, 0);
 }
 
-.side-nav {
+#side-nav {
     /*display:none;*/
     position:absolute;
     top:0;
@@ -204,7 +204,7 @@ body.left-nav .topcoat-navigation-bar, body.left-nav #main-content {
         width:auto;
     }
     
-    .side-nav {
+    #side-nav {
         display:block;
     }
 }

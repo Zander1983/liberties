@@ -21,7 +21,7 @@ define(function (require) {
 
         routes: {
             /****All generic routes from joomla feeds****/
-            "": "getGeneric",
+            "": "getHome",
             "news": "getGeneric",
             "news-item/:id": "getGenericItem",
             "childcare": "getGeneric",
@@ -178,33 +178,38 @@ define(function (require) {
         /******************ENDING STANDARD HELPER FUNCTIONS*******************/
         
         /*******************ROUTES START HERE***************************/
-        
+     
+        getHome: function () {
+                
+             
+            if(Backbone.history.fragment==="" || Backbone.history.fragment==="news"){
+                that.getGeneric();                       
+            }
+ 
+        },
         
         
         getGeneric: function () {
-            if(Backbone.history.fragment!=="messages/"+project_title){
+         
                 
-                    alert('Backbone.history.fragment is ');
-                    alert(Backbone.history.fragment);
-                
-                    if((typeof(generic)==='undefined' || generic===null)){
+                if((typeof(generic)==='undefined' || generic===null)){
 
-                        that.reGenerate();
-                    
-                    }
-                    else if(generic.getType()!==Backbone.history.fragment){
+                    that.reGenerate();
 
-                        that.reGenerate();
-                        
-                    }
-                    else{
-                        console.log('in the else so re-showing existing generic collection...');
-                        require(["app/views/GenericList"], function (GenericList) {                       
-                            Useful.correctView(that.body);
-                            slider.slidePage(new GenericList({collection: generic}).$el);
-                        });
-                    }
-            }
+                }
+                else if(generic.getType()!==Backbone.history.fragment){
+
+                    that.reGenerate();
+
+                }
+                else{
+                    console.log('in the else so re-showing existing generic collection...');
+                    require(["app/views/GenericList"], function (GenericList) {                       
+                        Useful.correctView(that.body);
+                        slider.slidePage(new GenericList({collection: generic}).$el);
+                    });
+                }
+            
 
         },
         

@@ -34,7 +34,6 @@ define(function (require) {
             
             }
             else{
-                alert('openming inAppBrowser');
                 window.open(href, '_blank');
             }
             

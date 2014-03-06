@@ -13,7 +13,7 @@
         school_name = "Liberties College",
         flickr_api_key = "450d4efdb33c88599329727fa3ee051e",
         flickr_user_id = "114333967@N08",
-        in_browser = true,
+        in_browser = false,
         is_push = false;  
   
 

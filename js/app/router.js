@@ -7,7 +7,6 @@ define(function (require) {
         Useful      = require('app/utils/useful_func'),
         slider      = new PageSlider($('body')),
         generic,
-        news,
         event,
         tweets,
         articles, 
@@ -56,6 +55,8 @@ define(function (require) {
             "photo-item/:id": "getPhotoItem",
             "tweets": "getTweets",
             "tweets-item/:id": "getTweetsItem",
+            "events": "getEvent",
+            "events-item/:id": "getEventItem",
             
             /*****In Every Project**************/
             "notification": "getNotification",

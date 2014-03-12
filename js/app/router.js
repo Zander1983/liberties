@@ -14,13 +14,16 @@ define(function (require) {
         genericmodel,
         photos,
         albums,
-        that;
+        that,
+        flickr_api_key,
+        flickr_user_id,
+        project;
 
     return Backbone.Router.extend({
 
         routes: {
             /****All generic routes from joomla feeds****/
-            "": "getHome",
+            "": "getGeneric",
             "news": "getGeneric",
             "news-item/:id": "getGenericItem",
             "childcare": "getGeneric",
@@ -179,15 +182,7 @@ define(function (require) {
         /******************ENDING STANDARD HELPER FUNCTIONS*******************/
         
         /*******************ROUTES START HERE***************************/
-     
-        getHome: function () {
-                
-        
-                if(is_push===false){
-                    that.getGeneric();                       
-                }
-           
-        },
+
         
         
         getGeneric: function () {
@@ -226,9 +221,11 @@ define(function (require) {
                         success: function (collection) {
                             Useful.correctView(that.body);
 
-                            //if(Backbone.history.fragment==="" || Backbone.history.fragment==="news"){
+                            if(is_push===false){
                                 slider.slidePage(new GenericList({collection: collection}).$el);                         
-                            //}
+                            }
+                            is_push = false;
+
 
                             Useful.hideSpinner();
 
@@ -463,6 +460,10 @@ define(function (require) {
                             });
           
                             data.set('seen', '1');
+                            
+                            setTimeout(function(){
+                                is_push = false;
+                            },1000);
 
                         },
                         error:function(){  
@@ -578,27 +579,58 @@ define(function (require) {
         
         getAlbums: function (id) {
             //body.removeClass('left-nav');
-            require(["app/models/album", "app/views/AlbumList"], function (model, AlbumList) {
+            require(["app/models/album", "app/models/project", "app/views/AlbumList"], function (model, projectModel, AlbumList) {
        
                 if(typeof(albums)==='undefined' || albums===null){
                     
                     Useful.showSpinner();
                     
-                    albums = new model.AlbumCollection();
+                    /*
+                     * FOR BROWSER TESTING
+                     */
+                    if(in_browser===true){
+                        that.device_id = test_device_id;
+                        that.api_key = test_api_key;
+                    }
                     
-                    albums.fetch({
-                        full_url: false,
-                        success: function (collection) {
-                            Useful.correctView(that.body);
-                            slider.slidePage(new AlbumList({collection: collection}).$el);
-                            Useful.hideSpinner();
+                    if(typeof(that.device_id)==='undefined' || that.device_id===null){
+                        that.setDeviceDetails();
+                    }
+                    
+                    project = new projectModel.Project({id:project_title});
+                    //get flicker details
+
+                    project.fetch({
+                        api: true,
+                        headers: {device_id:that.device_id,api_key:that.api_key},        
+                        success: function (data) {
+
+                            flickr_user_id = data.get('flickr_user_id');
+                            flickr_api_key = data.get('flickr_api_key');
+                            
+                            albums = new model.AlbumCollection({flickr_api_key:flickr_api_key, flickr_user_id:flickr_user_id});
+
+                            albums.fetch({
+                                full_url: false,
+                                success: function (collection) {
+                                    Useful.correctView(that.body);
+                                    slider.slidePage(new AlbumList({collection: collection}).$el);
+                                    Useful.hideSpinner();
+                                },
+                                error: function(){
+                                        Useful.correctView(that.body);
+                                        Useful.hideSpinner();
+                                        Useful.checkNetwork(slider);
+                                }
+                            });
                         },
-                        error: function(){
-                                Useful.correctView(that.body);
-                                Useful.hideSpinner();
-                                Useful.checkNetwork(slider);
-                        }
+                        error:   function(model, xhr, options){
+                           alert('Error on fetch')
+                           console.log(xhr.responseText);
+                        },
                     });
+
+
                 }
                 else{ 
                     Useful.correctView(that.body);
@@ -613,9 +645,12 @@ define(function (require) {
          getPhotos: function (id) {
             //body.removeClass('left-nav');
             require(["app/models/photo", "app/views/PhotoList"], function (model, PhotoList) {
+ 
 
                     Useful.showSpinner();
-                    photos = new model.PhotoCollection([], {photoset_id:id});
+                    photos = new model.PhotoCollection([], {flickr_api_key:flickr_api_key,
+                                                            flickr_user_id:flickr_user_id,
+                                                            photoset_id:id});
                     
                     photos.fetch({
                         full_url: true,

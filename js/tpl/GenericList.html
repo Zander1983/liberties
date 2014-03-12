@@ -1,5 +1,9 @@
 
+<%
 
+if(items.length>0){
+
+%>
 
     <ul class="topcoat-list list" >
     <% _.each(items, function(item) { 
@@ -17,3 +21,13 @@
     <%
     }); %>
     </ul>
+<%
+}
+else{
+%>
+<div class='center' id="inner-container">
+    No articles in <%= context %>
+</div>
+<%
+}
+%>

@@ -23,10 +23,7 @@ define(function (require) {
             feeds["general-education"]  = '/index.php?option=com_ninjarsssyndicator&feed_id=10&format=raw';
             feeds["youth-community"]  = '/index.php?option=com_ninjarsssyndicator&feed_id=12&format=raw';
             feeds["information-technology"]  = '/index.php?option=com_ninjarsssyndicator&feed_id=13&format=raw';
-   
-            feeds['albums']= 'http://api.flickr.com/services/rest/?method=flickr.photosets.getList&api_key='+flickr_api_key+'&user_id='+flickr_user_id;
-            feeds['photos'] = 'http://api.flickr.com/services/rest/?&method=flickr.photosets.getPhotos&api_key='+flickr_api_key+'&user_id='+flickr_user_id+'&extras=url_sq,url_t,url_s,url_m,url_o&photoset_id';
-   
+  
             return feeds[Backbone.history.fragment];
 
     };

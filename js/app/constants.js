@@ -11,9 +11,10 @@
         standard_api_key = "hv7Vgd4jsbb",
         twitter_handle = "LibertiesC",
         school_name = "Liberties College",
-        flickr_api_key = "450d4efdb33c88599329727fa3ee051e",
-        flickr_user_id = "114333967@N08",
-        in_browser = false,
+        in_browser = true,
         is_push = false;  
   
+      /********device id and api key for browser testing*********/
+    var test_device_id = 87,
+        test_api_key = 'mlQnpa9c';
 

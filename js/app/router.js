@@ -6,6 +6,7 @@ define(function (require) {
         PageSlider  = require('app/utils/pageslider'),
         Useful      = require('app/utils/useful_func'),
         slider      = new PageSlider($('body')),
+        projectModel = require("app/models/project"),
         generic,
         event,
         tweets,
@@ -17,6 +18,7 @@ define(function (require) {
         that,
         flickr_api_key,
         flickr_user_id,
+        feed_domain,
         project;
 
     return Backbone.Router.extend({
@@ -77,6 +79,8 @@ define(function (require) {
             //this.bind( "route", this.routeChange);
             
             this.storage = window.localStorage;
+            
+            this.setProjectDetails();
 
             this.setDeviceDetails();
  
@@ -208,13 +212,23 @@ define(function (require) {
 
         },
         
+
         reGenerate: function(){
 
             require(["app/models/generic", "app/views/GenericList"], function (model, GenericList) {
 
                     Useful.showSpinner();
+                    
+                    if(typeof(feed_domain)==='undefined' || feed_domain===null){
 
-                    generic = new model.GenericCollection();
+                        $.when(that.setProjectDetailsWait()).done(function(data){
+
+                        });
+
+                    }
+
+
+                    generic = new model.GenericCollection({feed_domain:feed_domain});
 
                     generic.fetch({
                         update:false,
@@ -226,13 +240,11 @@ define(function (require) {
                             }
                             is_push = false;
 
-
                             Useful.hideSpinner();
 
                         },
                         error:   function(model, xhr, options){
-
-                           Useful.correctView(that.body);
+                           Useful.correctView(that.body); 
                            Useful.hideSpinner();
                            Useful.checkNetwork(slider);
 
@@ -554,7 +566,7 @@ define(function (require) {
        
                         Useful.showSpinner();
                         
-                        genericmodel = new model.GenericModel();
+                        genericmodel = new model.GenericModel({feed_domain:feed_domain});
 
                         genericmodel.fetch({
                             success: function (model) {
@@ -588,47 +600,47 @@ define(function (require) {
                     /*
                      * FOR BROWSER TESTING
                      */
+                    /*
                     if(in_browser===true){
                         that.device_id = test_device_id;
                         that.api_key = test_api_key;
                     }
                     
+                    if(is_emulator===true){
+                        that.device_id = test_device_id;
+                        that.api_key = test_api_key;
+                    }*/
+                    
                     if(typeof(that.device_id)==='undefined' || that.device_id===null){
                         that.setDeviceDetails();
                     }
                     
-                    project = new projectModel.Project({id:project_title});
-                    //get flicker details
+                    
+                    if(typeof(flickr_api_key)==='undefined' || flickr_api_key===null){
 
-                    project.fetch({
-                        api: true,
-                        headers: {device_id:that.device_id,api_key:that.api_key},        
-                        success: function (data) {
+                        console.log('before the when');
+                        $.when(that.setProjectDetailsWait()).done(function(data){
 
-                            flickr_user_id = data.get('flickr_user_id');
-                            flickr_api_key = data.get('flickr_api_key');
-                            
-                            albums = new model.AlbumCollection({flickr_api_key:flickr_api_key, flickr_user_id:flickr_user_id});
+                        });
+                        console.log('after the when');
+                    }
 
-                            albums.fetch({
-                                full_url: false,
-                                success: function (collection) {
-                                    Useful.correctView(that.body);
-                                    slider.slidePage(new AlbumList({collection: collection}).$el);
-                                    Useful.hideSpinner();
-                                },
-                                error: function(){
-                                        Useful.correctView(that.body);
-                                        Useful.hideSpinner();
-                                        Useful.checkNetwork(slider);
-                                }
-                            });
+                    albums = new model.AlbumCollection({flickr_api_key:flickr_api_key, flickr_user_id:flickr_user_id});
+
+                    albums.fetch({
+                        full_url: false,
+                        success: function (collection) {
+                            Useful.correctView(that.body);
+                            slider.slidePage(new AlbumList({collection: collection}).$el);
+                            Useful.hideSpinner();
                         },
-                        error:   function(model, xhr, options){
-                           alert('Error on fetch')
-                           console.log(xhr.responseText);
-                        },
+                        error: function(){
+                                Useful.correctView(that.body);
+                                Useful.hideSpinner();
+                                Useful.checkNetwork(slider);
+                        }
                     });
+         
 
 
                 }
@@ -641,11 +653,9 @@ define(function (require) {
         },
         
         
-        
          getPhotos: function (id) {
             //body.removeClass('left-nav');
             require(["app/models/photo", "app/views/PhotoList"], function (model, PhotoList) {
- 
 
                     Useful.showSpinner();
                     photos = new model.PhotoCollection([], {flickr_api_key:flickr_api_key,
@@ -675,6 +685,7 @@ define(function (require) {
             });
         },
         
+        
         getPhotoItem: function (id) {
             //body.removeClass('left-nav');
             require(["app/views/PhotoItem"], function (PhotoItem) {
@@ -685,6 +696,53 @@ define(function (require) {
         },
 
 
+        setProjectDetails: function(){
+    
+            require(["app/models/album", "app/models/project", "app/views/AlbumList"], function (model, projectModel, AlbumList) {
+              
+                
+                    project = new projectModel.Project({id:project_title});
+                    //get flicker details
+
+                    project.fetch({
+                        api: true,
+                        headers: {device_id:standard_device_id,api_key:standard_api_key},        
+                        success: function (data) {
+
+                            flickr_user_id = data.get('flickr_user_id');
+                            flickr_api_key = data.get('flickr_api_key');
+                            feed_domain = data.get('feed_domain');
+         
+                        },
+                        error:   function(model, xhr, options){
+                           console.log('in setProjectDetails error');
+                        },
+                    });     
+            });    
+        },
+        
+        
+        setProjectDetailsWait: function(){
+     
+                    project = new projectModel.Project({id:project_title});
+
+                    return project.fetch({
+                        api: true,
+                        async:false,
+                        headers: {device_id:standard_device_id,api_key:standard_api_key},        
+                        success: function (data) {
+
+                            flickr_user_id = data.get('flickr_user_id');
+                            flickr_api_key = data.get('flickr_api_key');
+                            feed_domain = data.get('feed_domain');
+         
+                        },
+                        error:   function(model, xhr, options){
+                           console.log('in setProjectDetails error');
+                        },
+                    });     
+  
+        },
 
     
     });

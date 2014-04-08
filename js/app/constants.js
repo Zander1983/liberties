@@ -10,7 +10,7 @@
         standard_api_key = "hv7Vgd4jsbb",
         twitter_handle = "LibertiesC",
         school_name = "Liberties College",
-        in_browser = true,
+        in_browser = false,
         is_push = false;  
   
       /********device id and api key for browser testing*********/

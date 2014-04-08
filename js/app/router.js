@@ -25,7 +25,7 @@ define(function (require) {
 
         routes: {
             /****All generic routes from joomla feeds****/
-            "": "getGeneric",
+            "": "getHome",
             "news": "getGeneric",
             "news-item/:id": "getGenericItem",
             "childcare": "getGeneric",
@@ -132,7 +132,22 @@ define(function (require) {
         },
           
                 
-         /******************STANDARD HELPER FUNCTIONS*******************/       
+         /******************STANDARD HELPER FUNCTIONS*******************/      
+ 
+          getHome: function(){
+    
+            require(["app/views/Home"], function (Home) {
+
+                if(is_push===false){
+                    slider.slidePage(new Home().$el);                       
+                }
+                is_push = false;
+
+            });
+            
+    
+        },
+ 
         setupShell: function(){
     
             require(["app/views/SetupShell"], function (SetupShell) {
